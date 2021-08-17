@@ -12,35 +12,33 @@ import kotlinx.coroutines.launch
 
 class UserViewModel:ViewModel() {
 
-    var userRepository=UserRepository()
-    var regErrorLiveData=MutableLiveData<String>()
-    var regResponseLivedata=MutableLiveData<RegistrationResponse>()
-    var loginRepository=LoginRepository()
-    var logErrorLiveData=MutableLiveData<String>()
-    var logResponseLiveData=MutableLiveData<String>()
+    var userRepository = UserRepository()
+    var regErrorLiveData = MutableLiveData<String>()
+    var regResponseLivedata = MutableLiveData<RegistrationResponse>()
+    var loginRepository = LoginRepository()
+    var logErrorLiveData = MutableLiveData<String>()
+    var logResponseLiveData = MutableLiveData<String>()
 
 
-    fun registerStudent(registrationRequest: RegistrationRequest){
-    viewModelScope.launch {
-    var response = userRepository.registerUser(registrationRequest)
-        if (response.isSuccessful){
-            regResponseLivedata.postValue(response.body())
-        }
-        else{
-            regErrorLiveData.postValue(response.errorBody()?.string())
-        }
-}
-    }
-    fun logInStudent(logInRequest: LogInRequest){
+    fun registerStudent(registrationRequest: RegistrationRequest) {
         viewModelScope.launch {
-            var response = loginRepository.loginUser(logInRequest)
-            if (response.isSuccessful){
-                logResponseLiveData.postValue(response.body())
+            var response = userRepository.registerUser(registrationRequest)
+            if (response.isSuccessful) {
+                regResponseLivedata.postValue(response.body())
+            } else {
+                regErrorLiveData.postValue(response.errorBody()?.string())
             }
-            else{
-                logErrorLiveData.postValue(response.errorBody()?.string())
-            }
-
-
         }
-    }}
+    }
+        fun logInStudent(logInRequest: LogInRequest) {
+            viewModelScope.launch {
+                var response = loginRepository.loginUser(logInRequest)
+                if (response.isExecuted) {
+//                    logResponseLiveData.postValue(response.body())
+                } else {
+//                    logErrorLiveData.postValue(response.errorBody()?.string())
+                }
+            }
+        }
+    }
+

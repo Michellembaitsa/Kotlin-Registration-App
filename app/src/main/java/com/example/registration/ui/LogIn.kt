@@ -61,7 +61,7 @@ fun logInStudent(){
 }
     override fun onResume() {
         super.onResume()
-        userViewModel.logResponseLiveData(this,{ loginResponse ->
+        userViewModel.logResponseLiveData.observe(this,{ loginResponse ->
             Toast.makeText(baseContext,"Your login was succesful",Toast.LENGTH_LONG).show()
         })
         userViewModel.logErrorLiveData.observe(this, { loginRequest ->
