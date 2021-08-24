@@ -5,7 +5,6 @@ data class Course(
     var courseCode: String,
     var description:String,
     var instructor:String
-) {
+)
 
 
-}

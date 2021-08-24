@@ -6,34 +6,28 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.registration.models.Course
+class coursesAdapter( var courselister:List<Course>):RecyclerView.Adapter<coursesViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): coursesViewHolder {
+        var itemView=LayoutInflater.from(parent.context).inflate(R.layout.course_list_item,parent,false)
+        return coursesViewHolder(itemView)
 
-class CoursesAdapter(var courseList: List<Course>) : RecyclerView.Adapter<CoursesViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoursesViewHolder {
-        var itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.course_list_item, parent, false) //inflate function creates a view out of a single layout view
-        return CoursesViewHolder(itemView)
     }
 
-    override fun onBindViewHolder(
-        holder: CoursesViewHolder,
-        position: Int
-    ) { //this position points to the current index
-        var currentCourse = courseList.get(position)
-        holder.tvCourseName.text = currentCourse.courseName
-        holder.tvCourseCode.text = currentCourse.courseCode
-        holder.tvDecsription.text = currentCourse.description
-        holder.tvInstructor.text = currentCourse.instructor
+    override fun onBindViewHolder(holder: coursesViewHolder, position: Int) {
+        var currentCourse=courselister.get(position)
+        holder.tvcoursename.text=currentCourse.courseName
+        holder.tvcoursecode.text=currentCourse.courseCode
+        holder.tvdescription.text=currentCourse.description
+        holder.tvinstructor.text=currentCourse.instructor
     }
 
-    override fun getItemCount(): Int{
-        return courseList.size
+    override fun getItemCount(): Int {
+        return courselister.count()
     }
 }
-
-class CoursesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    var tvCourseName = itemView.findViewById<TextView>(R.id.tvCoursename)
-    var tvCourseCode = itemView.findViewById<TextView>(R.id.tvCourseCode)
-    var tvDecsription = itemView.findViewById<TextView>(R.id.tvDescription)
-    var tvInstructor = itemView.findViewById<TextView>(R.id.tvInstructor)
-
+class coursesViewHolder(itemView:View):RecyclerView.ViewHolder(itemView){
+    var tvcoursename=itemView.findViewById<TextView>(R.id.tvcourseName)
+    var tvcoursecode=itemView.findViewById<TextView>(R.id.tvCourseCode)
+    var tvdescription=itemView.findViewById<TextView>(R.id.tvDescription)
+    var tvinstructor=itemView.findViewById<TextView>(R.id.tvInstructor)
 }

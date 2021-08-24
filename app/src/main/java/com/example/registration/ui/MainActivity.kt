@@ -1,6 +1,8 @@
 package com.example.registration.ui
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -13,21 +15,31 @@ import com.example.registration.models.RegistrationRequest
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     val userViewModel: UserViewModel by viewModels()
+    lateinit var sharedPrefs:SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        sharedPrefs=getSharedPreferences(Constants.PREFS_FILE,Context.MODE_PRIVATE)
         setupSpinner()
         clickRegister()
-    }
 
+    }
+    fun redirectUser(){
+        var token=sharedPrefs.getString(Constants.ACCESS_TOKEN,Constants.EMPTY_STRING)
+        if (token!!.isNotEmpty()){
+            startActivity(Intent())
+
+        }
+
+}
     fun setupSpinner() {
         var nationalities = arrayOf("Kenyan", "Rwandan", "South Sudanese", "Sudanese", "Ugandan")
         var nationalitiesAdapter =
             ArrayAdapter(baseContext, android.R.layout.simple_spinner_item, nationalities)
         nationalitiesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spNationality.adapter = nationalitiesAdapter
+//        binding.etNationality.adap = nationalitiesAdapter
     }
 
     fun clickRegister() {
@@ -43,11 +55,11 @@ class MainActivity : AppCompatActivity() {
             if (dob.isEmpty()) {
                 binding.etDob.setError("Enter DOB")
             }
-            var nationality = binding.spNationality.selectedItem.toString().uppercase()
-            var password = binding.etPassword.text.toString().toString()
-            if (password.isEmpty()) {
-                binding.etPassword.setError("Enter password")
-            }
+//            var nationality = binding.etNationality.selectedItem.toString().uppercase()
+//            var password = binding.etP.text.toString().toString()
+//            if (password.isEmpty()) {
+//                binding.etPassword.setError("Enter password")
+//            }
             var phone = binding.etPhoneNumber.text.toString()
             if (phone.isEmpty()) {
                 binding.etPhoneNumber.setError("Enter Phone Number")
@@ -61,8 +73,8 @@ class MainActivity : AppCompatActivity() {
                 phoneNumber = phone,
                 email = email,
                 dateOfBirth = dob,
-                nationality = nationality,
-                password = password
+//                nationality = nationality,
+//                password = password
             )
             userViewModel.registerStudent(regRequest)
         }
@@ -71,22 +83,22 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         userViewModel.regResponseLivedata.observe(this, { regResponse ->
-            binding.pbRegistration.visibility = View.GONE
+            binding.pbRegistration.visibility= View.GONE
             if (!regResponse.studentId.isNullOrEmpty()) {
                 Toast.makeText(baseContext, "registration successful", Toast.LENGTH_LONG).show()
             }
         })
-        binding.pbRegistration.visibility = View.GONE
+        binding.pbRegistration.visibility= View.GONE
         userViewModel.regErrorLiveData.observe(this, {
             Toast.makeText(baseContext, "Error", Toast.LENGTH_LONG).show()
 
-        })
-
-    data class Info(
-        var name: String,
-        var password: String,
-        var email: String,
-        var nationality: String,
-        var phone: String
-    )
+        )}
+//
+//    data class Info(
+//        var name: String,
+//        var password: String,
+//        var email: String,
+//        var nationality: String,
+//        var phone: String
+//    )
 }}

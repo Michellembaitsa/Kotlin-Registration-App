@@ -1,38 +1,28 @@
 package com.example.registration.ui
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
+import android.view.View
 import android.widget.Toast
-import android.widget.Toolbar
 import androidx.activity.viewModels
-import com.example.registration.R
 import com.example.registration.ViewModel.UserViewModel
-import com.example.registration.api.ApiClient
-import com.example.registration.api.ApiInterface
 import com.example.registration.databinding.ActivityLogInBinding
-import com.example.registration.databinding.ActivityMainBinding
 import com.example.registration.models.LogInRequest
 import com.example.registration.models.LogInResponse
-import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class LogIn : AppCompatActivity(){
     lateinit var binding: ActivityLogInBinding
     val userViewModel: UserViewModel by viewModels()
+    lateinit var sharedPrefs:SharedPreferences
 
-//lateinit var logintoolbar: Toolbar
-//lateinit var tilusername:EditText
-//lateinit var tilpassword:EditText
-//lateinit var btnlogin:Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityLogInBinding.inflate(layoutInflater)
     setContentView(binding.root)
-//        castViews()
+        sharedPrefs=getSharedPreferences(Constants.PREFS_FILE,Context.MODE_PRIVATE)
         logInStudent()
 
 }
@@ -44,6 +34,7 @@ class LogIn : AppCompatActivity(){
 fun logInStudent(){
     var email=binding.tilusername.text.toString()
     var pswd=binding.tilpassword.text.toString()
+    var error=false
     binding.btnlogin.setOnClickListener {
         if (email.isEmpty()){
             binding.tilusername.setError("This field is compulsory")
@@ -55,19 +46,27 @@ fun logInStudent(){
     val loginRequest=LogInRequest(
         email=email,password = pswd
     )
-//
+
     userViewModel.logInStudent(loginRequest)
 
 }
     override fun onResume() {
         super.onResume()
-        userViewModel.logResponseLiveData.observe(this,{ loginResponse ->
-            Toast.makeText(baseContext,"Your login was succesful",Toast.LENGTH_LONG).show()
+        binding.btnlogin.setOnClickListener {
+//            validatelogin()
+            binding.tvError.visibility=View.GONE
+        }
+        userViewModel.logResponseLiveData.observe(this,{ logInResponse ->
+            var editor=sharedPrefs.edit()
+            editor.putString(Constants.ACCESS_TOKEN,logInResponse.accessToken)
+            editor.putString(Constants.STUDENT_ID,logInResponse.studentId)
+            editor.apply()
+
+//            binding.pb
+            Toast.makeText(baseContext,"Your login was successful",Toast.LENGTH_LONG).show()
         })
         userViewModel.logErrorLiveData.observe(this, { loginRequest ->
-            Toast.makeText(baseContext, "Your login was not ccessful", Toast.LENGTH_LONG).show()
+            Toast.makeText(baseContext, "Your login was not successful", Toast.LENGTH_LONG).show()
         })
     }
-
-
 }
