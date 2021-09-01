@@ -8,32 +8,34 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.activity.viewModels
-import com.example.registration.ViewModel.UserViewModel
+import com.example.registration.viewmodel.UserViewModel
 import com.example.registration.databinding.ActivityMainBinding
 import com.example.registration.models.RegistrationRequest
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     val userViewModel: UserViewModel by viewModels()
-    lateinit var sharedPrefs:SharedPreferences
+    lateinit var sharedPrefs: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        sharedPrefs=getSharedPreferences(Constants.PREFS_FILE,Context.MODE_PRIVATE)
+        sharedPrefs = getSharedPreferences(Constants.PREFS_FILE, Context.MODE_PRIVATE)
         setupSpinner()
         clickRegister()
 
     }
-    fun redirectUser(){
-        var token=sharedPrefs.getString(Constants.ACCESS_TOKEN,Constants.EMPTY_STRING)
-        if (token!!.isNotEmpty()){
+
+    fun redirectUser() {
+        var token = sharedPrefs.getString(Constants.ACCESS_TOKEN, Constants.EMPTY_STRING)
+        if (token!!.isNotEmpty()) {
             startActivity(Intent())
 
         }
 
-}
+    }
+
     fun setupSpinner() {
         var nationalities = arrayOf("Kenyan", "Rwandan", "South Sudanese", "Sudanese", "Ugandan")
         var nationalitiesAdapter =
@@ -73,8 +75,8 @@ class MainActivity : AppCompatActivity() {
                 phoneNumber = phone,
                 email = email,
                 dateOfBirth = dob,
-//                nationality = nationality,
-//                password = password
+                nationality = "",
+                password = ""
             )
             userViewModel.registerStudent(regRequest)
         }
@@ -83,22 +85,16 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         userViewModel.regResponseLivedata.observe(this, { regResponse ->
-            binding.pbRegistration.visibility= View.GONE
+            binding.pbRegistration.visibility = View.GONE
             if (!regResponse.studentId.isNullOrEmpty()) {
                 Toast.makeText(baseContext, "registration successful", Toast.LENGTH_LONG).show()
             }
         })
-        binding.pbRegistration.visibility= View.GONE
+        binding.pbRegistration.visibility = View.GONE
         userViewModel.regErrorLiveData.observe(this, {
             Toast.makeText(baseContext, "Error", Toast.LENGTH_LONG).show()
 
-        )}
-//
-//    data class Info(
-//        var name: String,
-//        var password: String,
-//        var email: String,
-//        var nationality: String,
-//        var phone: String
-//    )
-}}
+        })
+
+    }
+}

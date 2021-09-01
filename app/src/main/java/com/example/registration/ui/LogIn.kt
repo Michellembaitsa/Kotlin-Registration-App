@@ -7,10 +7,9 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
-import com.example.registration.ViewModel.UserViewModel
+import com.example.registration.viewmodel.UserViewModel
 import com.example.registration.databinding.ActivityLogInBinding
 import com.example.registration.models.LogInRequest
-import com.example.registration.models.LogInResponse
 
 class LogIn : AppCompatActivity(){
     lateinit var binding: ActivityLogInBinding

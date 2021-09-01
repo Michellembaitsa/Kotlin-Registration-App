@@ -1,10 +1,10 @@
-package com.example.registration.ViewModel
+package com.example.registration.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.registration.Repository.LoginRepository
-import com.example.registration.Repository.UserRepository
+import com.example.registration.repository.LoginRepository
+import com.example.registration.repository.UserRepository
 import com.example.registration.models.LogInRequest
 import com.example.registration.models.LogInResponse
 import com.example.registration.models.RegistrationRequest

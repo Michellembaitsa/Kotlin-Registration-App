@@ -1,9 +1,10 @@
-package com.example.registration.ViewModel
+package com.example.registration.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.registration.Repository.CoursesRepository
+import com.example.registration.repository.CoursesRepository
 import com.example.registration.models.CoursesResponse
 import kotlinx.coroutines.launch
 
@@ -16,7 +17,8 @@ class CoursesViewModel: ViewModel() {
         viewModelScope.launch {
             var response = coursesRepository.coursesList(accessToken)
             if (response.isSuccessful) {
-                courseResponseLiveData.postValue(response.body())
+                Log.e("CoursesViewModel", ": displayCoursesList: response.body[ ${response.body().toString()} ]")
+                //courseResponseLiveData.postValue(response.body())
             } else {
                 courseErrorLiveData.postValue(response.errorBody()?.string())
             }
