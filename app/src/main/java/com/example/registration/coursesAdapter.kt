@@ -5,11 +5,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.registration.models.Course
 
 class CoursesAdapter(var courseList: List<Course>) : RecyclerView.Adapter<CoursesViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoursesViewHolder {
         var itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.course_list_item, parent, false) //inflate function creates a view out of a single layout view
+            .inflate(
+                R.layout.course_list_item,
+                parent,
+                false
+            ) //inflate function creates a view out of a single layout view
         return CoursesViewHolder(itemView)
     }
 
@@ -24,7 +29,7 @@ class CoursesAdapter(var courseList: List<Course>) : RecyclerView.Adapter<Course
         holder.tvInstructor.text = currentCourse.instructor
     }
 
-    override fun getItemCount(): Int{
+    override fun getItemCount(): Int {
         return courseList.size
     }
 }

@@ -35,21 +35,22 @@ class MainActivity : AppCompatActivity() {
 //        clickRegister()
         }
     fun clickRegister(){
-        btnRegister.setOnClickListener {
-            var name=etName.text.toString()
-            if(name.isEmpty()){
-                error==true
-                etDob.setError("Name is required")
-                val intent = Intent(baseContext,CoursesActivity::class.java)
-                startActivity(intent)
-            }
-//            var details = Info(name,)
+        btnRegister.setOnClickListener { btnRegisterView ->
 
-//            Toast.makeText(baseContext,"Welcome to AkiraChix!",Toast.LENGTH_LONG).show() //This is a toast
-            var dob=etDob.text.toString()
-            if(dob.isEmpty()){
-                etNationality.getError()
+            etName.text.toString().let {
+                if (it.isNullOrBlank()) {
+                    etName.error = "Name is required"
+                    //startActivity(Intent(baseContext, CoursesActivity::class.java))
+                }
+                return@let it
             }
+
+            etDob.text.toString().let {
+                if (it.isNullOrBlank()) {
+                    etNationality.error = "Date of birth is required"
+                }
+            }
+
             var nationality=etNationality.text.toString()
             if(nationality.isEmpty()){
                 etId.getError()
@@ -64,11 +65,7 @@ class MainActivity : AppCompatActivity() {
             }
             var email=etEmail.text.toString()
 
-            var info=Info(name, id, email, nationality, phone)
-            if(name.isEmpty()){
-//                etEmail.getError(" required")
-            }
-//            Toast.makeText(baseContext,info.toString(),Toast.LENGTH_LONG).show()
+            //var info=Info(name, id, email, nationality, phone)
 
         }
     }
